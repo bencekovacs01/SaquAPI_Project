@@ -14,7 +14,7 @@ public class LoginResource {
     @Path("/")
     @POST
     @Produces("application/json")
-    public Response login(@NotNull Login login){
+    public Response login(@NotNull Login login) {
         return Response.ok(login).build();
     }
 }
