@@ -1,4 +1,4 @@
-package database;
+package saquapi.database;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 // Importing database

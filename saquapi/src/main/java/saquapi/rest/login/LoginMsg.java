@@ -1,9 +1,8 @@
-package com.saquapi.login;
+package saquapi.rest.login;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+import javax.validation.constraints.NotNull;
 
-public class Login {
+public class LoginMsg {
 
     @NotNull
     String firstName;
