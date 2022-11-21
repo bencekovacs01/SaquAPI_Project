@@ -1,7 +1,8 @@
 package saquapi.rest.login;
 
 import javax.validation.constraints.NotNull;
-import saquapi.entity.LoggerService;
+import saquapi.services.logger.LoggerService;
+import saquapi.services.login.LoginService;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -13,13 +14,12 @@ import javax.ws.rs.core.Response;
 public class LoginResource {
 
     @Inject
-    LoggerService loggerService;
+    LoginService loginService;
 
     @Path("/")
     @POST
     @Produces("application/json")
-    public Response login(@NotNull LoginMsg loginMsg) {
-//        loggerService.log("");
-        return Response.ok(loginMsg).build();
+    public LoginMsg login(@NotNull LoginMsg loginMsg) throws Exception {
+        return loginService.login(loginMsg);
     }
 }
