@@ -7,4 +7,6 @@ import org.slf4j.LoggerFactory;
 
 public interface LoggerService {
     void info(String message);
+    void warning(String message);
+    void error(String message);
 }
