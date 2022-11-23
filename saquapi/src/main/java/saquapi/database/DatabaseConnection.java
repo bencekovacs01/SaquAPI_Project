@@ -12,6 +12,50 @@ public class DatabaseConnection {
     private static ResultSet rs;
     private static List<DataRecord> mydata;
 
+    public static void deleteUser(int roomnumber){
+        try{
+            ps = con.prepareStatement("delete from Users where Name=?");
+            ps.setInt(1,roomnumber);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void changeUserEmail(int roomnumber, String email){
+        try{
+            ps = con.prepareStatement("update Users set Email=? where RoomNumber=?");
+            ps.setString(1,email);
+            ps.setInt(2,roomnumber);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void changeUserPassword(int roomnumber, String newPass){
+        try{
+            ps = con.prepareStatement("update Users set Password=? where RoomNumber=?");
+            ps.setString(1,newPass);
+            ps.setInt(2,roomnumber);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void newUser(int roomnumber, String password, String email){
+        try{
+            ps = con.prepareStatement("insert into Users values (?,?,?)");
+            ps.setInt(1,roomnumber);
+            ps.setString(2,password);
+            ps.setString(3,email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static byte[] getImage(int key){
         try{
             ps = con.prepareStatement("select Image from Data");
