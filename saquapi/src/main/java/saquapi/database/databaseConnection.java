@@ -1,91 +1,122 @@
 package saquapi.database;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+
 // Importing database
 import java.sql.*;
 // Importing required classes
-import java.util.*;
 import java.io.*;
+import java.util.List;
 
-@Path("/databaseConnection")
-public class databaseConnection {
+public class DatabaseConnection {
     private static Connection con;
+    private  static PreparedStatement ps;
+    private static ResultSet rs;
+    private static List<DataRecord> mydata;
 
-    @GET
-    public static void myMain(){ // call functions to be tested
-        estabilishConnection();
-        uploadImageToDatabase();
-        downloadImageFromDatabase();
-        closeConnection();
-    }
-
-    public static void uploadImageToDatabase(){
+    public static byte[] getImage(int key){
         try{
-            PreparedStatement ps=con.prepareStatement("insert into ImgTable values(?,?)"); // query
-            ps.setString(1,"MyImage"); // set 1st param
-            FileInputStream fin = new FileInputStream("G:\\egyetem\\III\\1\\Software\\kepek\\Fuzi_Zalan.jpg"); // image path
-            ps.setBinaryStream(2,fin,fin.available()); // set 2nd param
-            int i = ps.executeUpdate();
-            System.out.println(i + " records affected");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void downloadImageFromDatabase(){
-        try{
-            PreparedStatement ps=con.prepareStatement("select * from ImgTable");
-            ResultSet rs=ps.executeQuery();
+            ps = con.prepareStatement("select Image from Data");
+            rs = ps.executeQuery();
             if(rs.next()){
-                Blob b=rs.getBlob(2);//2 means 2nd column data
-                byte barr[]=b.getBytes(1,(int)b.length());//1 means first image
-                FileOutputStream fout=new FileOutputStream("G:\\egyetem\\III\\1\\Software\\kepek\\Fuzi_Zalan1.jpg");
-                fout.write(barr);
-                fout.close();
+                Blob b = rs.getBlob("Image");
+                return b.getBytes(1,(int)b.length());
             }
-            System.out.println("ok");
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-    }
+        return new byte[0]; // just in case something went wrong
+    } // SELECT get image on index(key)
 
-    public static void getUsers(){
+    public  static void deleteData(int key){
         try{
-            String query = "select * from Users"; // query to be run
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query); // Execute query
-            rs.next();
-            String name = rs.getString("UserName"); // Retrieve name from db
-            System.out.println(name); // Print result on console
-            st.close(); // close statement
+            ps = con.prepareStatement("delete from Data where `Key`=?");
+            ps.setInt(1,key);
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-    //
+    } // DELETE delete record
+
+    public static void updateData(int key, long coldwater, long hotwater){
+        try{
+            ps = con.prepareStatement("update Data set ColdWater=?, HotWater=? where `Key`=?");
+            ps.setLong(1,coldwater);
+            ps.setLong(2,hotwater);
+            ps.setInt(3,key);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    } // UPDATE update data
+
+    public static void insertData(int roomnumber, long coldwater, long hotwater, Date date, FileInputStream fin){
+        try{
+            ps = con.prepareStatement("insert into Data(roomnumber, coldwater, hotwater, date, image) values(?,?,?,?,?)");
+            ps.setInt(1,roomnumber);
+            ps.setLong(2,coldwater);
+            ps.setLong(3,hotwater);
+            ps.setDate(4,date);
+            ps.setBinaryStream(5,fin,fin.available());
+            ps.executeUpdate();
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    } // INSERT insert new data
+
+    public static List<DataRecord> listRoomData(int roomnumber){
+        try{
+            mydata = null;
+            ps = con.prepareStatement("select HotWater, ColdWater, `Key` from Data where RoomNumber=?");
+            ps.setInt(1,roomnumber);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                mydata.add(new DataRecord(rs.getInt("Key"),roomnumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
+            }
+            return mydata;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    } // SELECT list all data of given roomnumber
+
+    public static List<DataRecord> listAll(){
+        try{
+            mydata = null;
+            ps = con.prepareStatement("select * from Data");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                mydata.add(new DataRecord(rs.getInt("Key"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
+            }
+            return mydata;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    } // SELECT list all data
+
+    public static boolean loginCredentials(String username, String password){
+        try{
+            ps = con.prepareStatement("select 1 from Users where UserName=? and Password=?");
+            ps.setString(1,username);
+            ps.setString(2,password);
+            rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    } // SELECT check if the given username-password pair exists
+
     public static void estabilishConnection(){
         try {
-            System.out.println("Establishing connection...");
             String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11529590"; // table details
             String username = "sql11529590"; // MySQL credentials
             String password = "zgLnGAJWEY";
             Class.forName("com.mysql.jdbc.Driver"); // Driver name
+            System.out.println("Establishing connection...");
             con = DriverManager.getConnection(url, username, password);
             System.out.println("Connection Established successfully");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    } // create connection with DB
+
     public static void closeConnection(){
         try{
             con.close(); // close connection
@@ -93,5 +124,5 @@ public class databaseConnection {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    } // close the DB connection
 }
