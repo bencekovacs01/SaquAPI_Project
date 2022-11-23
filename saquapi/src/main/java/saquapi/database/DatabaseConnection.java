@@ -135,10 +135,10 @@ public class DatabaseConnection {
         }
     } // SELECT list all data
 
-    public static boolean loginCredentials(String username, String password){
+    public static boolean loginCredentials(int roomnumber, String password){
         try{
-            ps = con.prepareStatement("select 1 from Users where UserName=? and Password=?");
-            ps.setString(1,username);
+            ps = con.prepareStatement("select 1 from Users where RoomNumber=? and Password=?");
+            ps.setInt(1,roomnumber);
             ps.setString(2,password);
             rs = ps.executeQuery();
             return rs.next();
