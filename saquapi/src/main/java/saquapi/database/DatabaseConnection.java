@@ -12,42 +12,42 @@ public class DatabaseConnection {
     private static ResultSet rs;
     private static List<DataRecord> mydata;
 
-    public static void deleteUser(int roomnumber){
+    public static void deleteUser(int roomNumber){
         try{
             ps = con.prepareStatement("delete from Users where Name=?");
-            ps.setInt(1,roomnumber);
+            ps.setInt(1,roomNumber);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void changeUserEmail(int roomnumber, String email){
+    public static void changeUserEmail(int roomNumber, String email){
         try{
             ps = con.prepareStatement("update Users set Email=? where RoomNumber=?");
             ps.setString(1,email);
-            ps.setInt(2,roomnumber);
+            ps.setInt(2,roomNumber);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void changeUserPassword(int roomnumber, String newPass){
+    public static void changeUserPassword(int roomNumber, String newPass){
         try{
             ps = con.prepareStatement("update Users set Password=? where RoomNumber=?");
             ps.setString(1,newPass);
-            ps.setInt(2,roomnumber);
+            ps.setInt(2,roomNumber);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void newUser(int roomnumber, String password, String email){
+    public static void newUser(int roomNumber, String password, String email){
         try{
             ps = con.prepareStatement("insert into Users values (?,?,?)");
-            ps.setInt(1,roomnumber);
+            ps.setInt(1,roomNumber);
             ps.setString(2,password);
             ps.setString(3,email);
             ps.executeUpdate();
@@ -80,11 +80,11 @@ public class DatabaseConnection {
         }
     } // DELETE delete record
 
-    public static void updateData(int key, long coldwater, long hotwater){
+    public static void updateData(int key, long coldWater, long hotWater){
         try{
             ps = con.prepareStatement("update Data set ColdWater=?, HotWater=? where `Key`=?");
-            ps.setLong(1,coldwater);
-            ps.setLong(2,hotwater);
+            ps.setLong(1,coldWater);
+            ps.setLong(2,hotWater);
             ps.setInt(3,key);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -92,12 +92,12 @@ public class DatabaseConnection {
         }
     } // UPDATE update data
 
-    public static void insertData(int roomnumber, long coldwater, long hotwater, Date date, FileInputStream fin){
+    public static void insertData(int roomNumber, long coldWater, long hotWater, Date date, FileInputStream fin){
         try{
             ps = con.prepareStatement("insert into Data(roomnumber, coldwater, hotwater, date, image) values(?,?,?,?,?)");
-            ps.setInt(1,roomnumber);
-            ps.setLong(2,coldwater);
-            ps.setLong(3,hotwater);
+            ps.setInt(1,roomNumber);
+            ps.setLong(2,coldWater);
+            ps.setLong(3,hotWater);
             ps.setDate(4,date);
             ps.setBinaryStream(5,fin,fin.available());
             ps.executeUpdate();
@@ -106,20 +106,20 @@ public class DatabaseConnection {
         }
     } // INSERT insert new data
 
-    public static List<DataRecord> listRoomData(int roomnumber){
+    public static List<DataRecord> listRoomData(int roomNumber){
         try{
             mydata = null;
             ps = con.prepareStatement("select HotWater, ColdWater, `Key` from Data where RoomNumber=?");
-            ps.setInt(1,roomnumber);
+            ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
             while (rs.next()){
-                mydata.add(new DataRecord(rs.getInt("Key"),roomnumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                mydata.add(new DataRecord(rs.getInt("Key"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
             return mydata;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    } // SELECT list all data of given roomnumber
+    } // SELECT list all data of given roomNumber
 
     public static List<DataRecord> listAll(){
         try{
@@ -135,12 +135,14 @@ public class DatabaseConnection {
         }
     } // SELECT list all data
 
-    public static boolean loginCredentials(int roomnumber, String password){
+    public static boolean loginCredentials(int roomNumber, String password){
         try{
+            estabilishConnection();
             ps = con.prepareStatement("select 1 from Users where RoomNumber=? and Password=?");
-            ps.setInt(1,roomnumber);
+            ps.setInt(1,roomNumber);
             ps.setString(2,password);
             rs = ps.executeQuery();
+            closeConnection();
             return rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -153,9 +155,7 @@ public class DatabaseConnection {
             String username = "sql11529590"; // MySQL credentials
             String password = "zgLnGAJWEY";
             Class.forName("com.mysql.jdbc.Driver"); // Driver name
-            System.out.println("Establishing connection...");
             con = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection Established successfully");
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -164,7 +164,6 @@ public class DatabaseConnection {
     public static void closeConnection(){
         try{
             con.close(); // close connection
-            System.out.println("Connection Closed....");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
