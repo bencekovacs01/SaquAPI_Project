@@ -124,7 +124,7 @@ public class DatabaseConnection {
     public static List<DataRecord> listAll(){
         try{
             mydata = null;
-            ps = con.prepareStatement("select * from Data");
+            ps = con.prepareStatement("select 'Key',RoomNumber,ColdWater,HotWater from Data");
             rs = ps.executeQuery();
             while(rs.next()){
                 mydata.add(new DataRecord(rs.getInt("Key"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
@@ -137,13 +137,15 @@ public class DatabaseConnection {
 
     public static boolean loginCredentials(int roomNumber, String password){
         try{
+
             estabilishConnection();
             ps = con.prepareStatement("select 1 from Users where RoomNumber=? and Password=?");
             ps.setInt(1,roomNumber);
             ps.setString(2,password);
             rs = ps.executeQuery();
+            Boolean returnValue = rs.next();
             closeConnection();
-            return rs.next();
+            return returnValue;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

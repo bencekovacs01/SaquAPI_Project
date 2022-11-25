@@ -28,12 +28,9 @@ public class LoginServiceBean implements LoginService{
     }
 
     private Boolean authentication(LoginMsg loginMsg){
-        DatabaseConnection.estabilishConnection();
         if (!DatabaseConnection.loginCredentials(loginMsg.getRoomNumber(), loginMsg.getPassword())){
-            DatabaseConnection.closeConnection();
             return false;
         }
-        DatabaseConnection.closeConnection();
         return true;
     }
 
