@@ -2,20 +2,20 @@ package saquapi.rest.login;
 
 import javax.validation.constraints.NotNull;
 
-public final class LoginMsg {
+public class LoginMsg {
 
     @NotNull
-    String userName;
+    int roomNumber;
 
     @NotNull
     String password;
 
-    public String getUserName() {
-        return userName;
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public String getPassword() {
@@ -29,7 +29,7 @@ public final class LoginMsg {
     @Override
     public String toString() {
         return "LoginMsg{" +
-                "userName='" + userName + '\'' +
+                "roomNumber='" + roomNumber + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
