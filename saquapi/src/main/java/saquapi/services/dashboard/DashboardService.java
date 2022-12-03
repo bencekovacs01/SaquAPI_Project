@@ -13,4 +13,6 @@ public interface DashboardService {
     List<ResponseDataRecord> getAllRooms();
 
     Boolean insertData(RequestResponseDataRecord dataRecord);
+
+    List<ResponseDataRecord> getAllRoomsWithData();
 }
