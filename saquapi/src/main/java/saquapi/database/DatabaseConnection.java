@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private static Connection con;
     private  static PreparedStatement ps;
     private static ResultSet rs;
-    private static List<DataRecord> mydata;
+    private static List<ResponseDataRecord> myData;
 
     public static void deleteUser(int roomNumber){
         try{
@@ -106,30 +106,30 @@ public class DatabaseConnection {
         }
     } // INSERT insert new data
 
-    public static List<DataRecord> listRoomData(int roomNumber){
+    public static List<ResponseDataRecord> listRoomData(int roomNumber){
         try{
-            mydata = null;
+            myData = null;
             ps = con.prepareStatement("select HotWater, ColdWater, `Key` from Data where RoomNumber=?");
             ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
             while (rs.next()){
-                mydata.add(new DataRecord(rs.getInt("Key"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new ResponseDataRecord(rs.getInt("Key"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
-            return mydata;
+            return myData;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     } // SELECT list all data of given roomNumber
 
-    public static List<DataRecord> listAll(){
+    public static List<ResponseDataRecord> listAll(){
         try{
-            mydata = null;
+            myData = null;
             ps = con.prepareStatement("select 'Key',RoomNumber,ColdWater,HotWater from Data");
             rs = ps.executeQuery();
             while(rs.next()){
-                mydata.add(new DataRecord(rs.getInt("Key"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new ResponseDataRecord(rs.getInt("Key"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
-            return mydata;
+            return myData;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
