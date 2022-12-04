@@ -17,4 +17,6 @@ public interface DashboardService {
     List<ResponseDataRecord> getAllRoomsWithData();
 
     List<ResponseDataRecord> getRoomData(int roomNumber);
+
+    byte[] getImage(int key);
 }

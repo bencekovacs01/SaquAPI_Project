@@ -29,4 +29,11 @@ public class AdminDashboardResource {
         dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
         return dashboardService.getRoomData(roomNumber);
     }
+
+    @Path("/get-image")
+    @GET
+    public byte[] getImage(@QueryParam("key") int key){
+        dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
+        return dashboardService.getImage(key);
+    }
 }
