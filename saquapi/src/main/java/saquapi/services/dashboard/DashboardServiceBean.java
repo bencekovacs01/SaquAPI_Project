@@ -38,4 +38,12 @@ public class DashboardServiceBean implements DashboardService{
             return null;
         }
     }
+
+    public List<ResponseDataRecord> getRoomData(int roomNumber){
+        try{
+            return DatabaseConnection.listRoomData(roomNumber);
+        }catch (RuntimeException e){
+            return null;
+        }
+    }
 }

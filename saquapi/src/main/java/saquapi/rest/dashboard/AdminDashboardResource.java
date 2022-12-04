@@ -6,9 +6,7 @@ import saquapi.services.dashboard.DashboardService;
 import saquapi.services.dashboard.DashboardServiceBean;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.util.List;
 
 @Path("/dashboard/admin")
@@ -23,5 +21,12 @@ public class AdminDashboardResource {
     public List<ResponseDataRecord> getAllRoomsWithData() {
         dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
         return dashboardService.getAllRoomsWithData();
+    }
+
+    @Path("/get-room-data")
+    @GET
+    public List<ResponseDataRecord> getRoomData(@QueryParam("roomNumber") int roomNumber){
+        dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
+        return dashboardService.getRoomData(roomNumber);
     }
 }
