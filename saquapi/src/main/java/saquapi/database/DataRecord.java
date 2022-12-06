@@ -2,6 +2,7 @@ package saquapi.database;
 
 public class DataRecord {
 
+    int key;
     int roomNumber;
     long coldWater;
     long hotWater;
@@ -9,10 +10,19 @@ public class DataRecord {
     public DataRecord() {
     }
 
-    public DataRecord(int roomNumber, long coldWater, long hotWater) {
+    public DataRecord(int key, int roomNumber, long coldWater, long hotWater) {
+        this.key = key;
         this.roomNumber = roomNumber;
         this.coldWater = coldWater;
         this.hotWater = hotWater;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
     }
 
     public int getRoomNumber() {

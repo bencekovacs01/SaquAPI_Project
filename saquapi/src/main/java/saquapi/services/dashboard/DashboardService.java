@@ -1,7 +1,7 @@
 package saquapi.services.dashboard;
 
-import saquapi.database.ResponseDataRecord;
-import saquapi.database.RequestResponseDataRecord;
+import saquapi.database.DataRecord;
+import saquapi.database.RequestDataRecord;
 import saquapi.rest.login.LoginMsg;
 
 import java.util.List;
@@ -10,13 +10,13 @@ public interface DashboardService {
 
     void changePassword(LoginMsg loginMsg);
 
-    List<ResponseDataRecord> getAllRooms();
+    List<DataRecord> getAllRooms();
 
-    Boolean insertData(RequestResponseDataRecord dataRecord);
+    Boolean insertData(RequestDataRecord dataRecord);
 
-    List<ResponseDataRecord> getAllRoomsWithData();
+    List<DataRecord> getAllRoomsWithData();
 
-    List<ResponseDataRecord> getRoomData(int roomNumber);
+    List<DataRecord> getRoomData(int roomNumber);
 
     byte[] getImage(int key);
 }

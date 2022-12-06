@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private static Connection con;
     private  static PreparedStatement ps;
     private static ResultSet rs;
-    private static List<ResponseDataRecord> myData;
+    private static List<DataRecord> myData;
 
     public static void deleteUser(int roomNumber){
         try{
@@ -106,14 +106,14 @@ public class DatabaseConnection {
         }
     } // INSERT insert new data
 
-    public static List<ResponseDataRecord> listRoomData(int roomNumber){
+    public static List<DataRecord> listRoomData(int roomNumber){
         try{
             myData = null;
-            ps = con.prepareStatement("select HotWater, ColdWater, `Key` from Data where RoomNumber=?");
+            ps = con.prepareStatement("select HotWater, ColdWater, IDX from Data where RoomNumber=?");
             ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
             while (rs.next()){
-                myData.add(new ResponseDataRecord(rs.getInt("Key"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new DataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
             return myData;
         } catch (SQLException e) {
@@ -121,13 +121,13 @@ public class DatabaseConnection {
         }
     } // SELECT list all data of given roomNumber
 
-    public static List<ResponseDataRecord> listAll(){
+    public static List<DataRecord> listAll(){
         try{
             myData = null;
-            ps = con.prepareStatement("select 'Key',RoomNumber,ColdWater,HotWater from Data");
+            ps = con.prepareStatement("select IDX,RoomNumber,ColdWater,HotWater from Data");
             rs = ps.executeQuery();
             while(rs.next()){
-                myData.add(new ResponseDataRecord(rs.getInt("Key"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new DataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
             return myData;
         } catch (SQLException e) {

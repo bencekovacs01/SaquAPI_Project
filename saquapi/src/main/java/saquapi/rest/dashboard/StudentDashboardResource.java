@@ -1,6 +1,6 @@
 package saquapi.rest.dashboard;
 
-import saquapi.database.RequestResponseDataRecord;
+import saquapi.database.RequestDataRecord;
 import saquapi.rest.base.ResponseMessage;
 import saquapi.rest.login.LoginMsg;
 import saquapi.services.base.InvocationProxy;
@@ -30,7 +30,7 @@ public class StudentDashboardResource {
 
     @Path("/save")
     @POST
-    public Response save(RequestResponseDataRecord requestDataRecord) {
+    public Response save(RequestDataRecord requestDataRecord) {
         dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
         return Response.ok(new ResponseMessage(dashboardService.insertData(requestDataRecord) ? "SUCCESS" : "FAILED")).build();
     }

@@ -2,15 +2,17 @@ package saquapi.services.base;
 
 import saquapi.database.DatabaseConnection;
 import saquapi.services.dashboard.DashboardService;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 public class InvocationProxy implements InvocationHandler {
 
     private final DashboardService instance;
 
     public static DashboardService newInstance(DashboardService obj) {
-        return (DashboardService) java.lang.reflect.Proxy.newProxyInstance(obj.getClass().getClassLoader(),
+        return (DashboardService) Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                 obj.getClass().getInterfaces(), new InvocationProxy(obj));
     }
 
@@ -24,7 +26,7 @@ public class InvocationProxy implements InvocationHandler {
         try {
             DatabaseConnection.estabilishConnection();
             result = method.invoke(instance, args);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         } finally {

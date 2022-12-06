@@ -2,15 +2,15 @@ package saquapi.database;
 
 import java.io.FileInputStream;
 
-public class RequestResponseDataRecord extends DataRecord {
+public class RequestDataRecord extends DataRecord {
 
     public FileInputStream fileInputStream;
 
-    public RequestResponseDataRecord() {
+    public RequestDataRecord() {
     }
 
-    public RequestResponseDataRecord(int roomNumber, long coldWater, long hotWater, FileInputStream fileInputStream) {
-        super(roomNumber, coldWater, hotWater);
+    public RequestDataRecord(int key, int roomNumber, long coldWater, long hotWater, FileInputStream fileInputStream) {
+        super(key, roomNumber, coldWater, hotWater);
         this.fileInputStream = fileInputStream;
     }
 
