@@ -24,7 +24,7 @@ public class InvocationProxy implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
         try {
-            DatabaseConnection.estabilishConnection();
+            DatabaseConnection.establishConnection();
             result = method.invoke(instance, args);
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,17 +4,18 @@ package saquapi.database;
 import java.sql.*;
 // Importing required classes
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseConnection {
     private static Connection con;
     private  static PreparedStatement ps;
     private static ResultSet rs;
-    private static List<DataRecord> myData;
+    private static final List<DataRecord> myData = new ArrayList<>();
 
     public static void deleteUser(int roomNumber){
         try{
-            ps = con.prepareStatement("delete from Users where Name=?");
+            ps = con.prepareStatement("delete from Users where RoomNumber=?");
             ps.setInt(1,roomNumber);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -72,7 +73,7 @@ public class DatabaseConnection {
 
     public  static void deleteData(int key){
         try{
-            ps = con.prepareStatement("delete from Data where `Key`=?");
+            ps = con.prepareStatement("delete from Data where IDX=?");
             ps.setInt(1,key);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -82,7 +83,7 @@ public class DatabaseConnection {
 
     public static void updateData(int key, long coldWater, long hotWater){
         try{
-            ps = con.prepareStatement("update Data set ColdWater=?, HotWater=? where `Key`=?");
+            ps = con.prepareStatement("update Data set ColdWater=?, HotWater=? where IDX=?");
             ps.setLong(1,coldWater);
             ps.setLong(2,hotWater);
             ps.setInt(3,key);
@@ -108,7 +109,7 @@ public class DatabaseConnection {
 
     public static List<DataRecord> listRoomData(int roomNumber){
         try{
-            myData = null;
+            myData.clear();
             ps = con.prepareStatement("select HotWater, ColdWater, IDX from Data where RoomNumber=?");
             ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
@@ -123,7 +124,7 @@ public class DatabaseConnection {
 
     public static List<DataRecord> listAll(){
         try{
-            myData = null;
+            myData.clear();
             ps = con.prepareStatement("select IDX,RoomNumber,ColdWater,HotWater from Data");
             rs = ps.executeQuery();
             while(rs.next()){
@@ -137,21 +138,17 @@ public class DatabaseConnection {
 
     public static boolean loginCredentials(int roomNumber, String password){
         try{
-
-            estabilishConnection();
             ps = con.prepareStatement("select 1 from Users where RoomNumber=? and Password=?");
             ps.setInt(1,roomNumber);
             ps.setString(2,password);
             rs = ps.executeQuery();
-            Boolean returnValue = rs.next();
-            closeConnection();
-            return returnValue;
+            return rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     } // SELECT check if the given username-password pair exists
 
-    public static void estabilishConnection(){
+    public static void establishConnection(){
         try {
             String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11529590"; // table details
             String username = "sql11529590"; // MySQL credentials
