@@ -9,14 +9,14 @@ import java.lang.reflect.Proxy;
 
 public class InvocationProxy implements InvocationHandler {
 
-    private final DashboardService instance;
+    private final Object instance;
 
-    public static DashboardService newInstance(DashboardService obj) {
-        return (DashboardService) Proxy.newProxyInstance(obj.getClass().getClassLoader(),
+    public static Object newInstance(Object obj) {
+        return Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                 obj.getClass().getInterfaces(), new InvocationProxy(obj));
     }
 
-    public InvocationProxy(DashboardService instance) {
+    public InvocationProxy(Object instance) {
         this.instance = instance;
     }
 

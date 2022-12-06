@@ -13,12 +13,12 @@ public class LoginServiceBean implements LoginService{
 
     @Override
     public LoginMsg login(LoginMsg loginMsg){
-        loggerService.info("Logging in...");
+//        loggerService.info("Logging in...");
         if (!authentication(loginMsg)){
-            loggerService.error("Wrong login credentials!");
+//            loggerService.error("Wrong login credentials!");
             return null;
         }
-        loggerService.info(loginMsg.toString());
+//        loggerService.info(loginMsg.toString());
         return loginMsg;
     }
 

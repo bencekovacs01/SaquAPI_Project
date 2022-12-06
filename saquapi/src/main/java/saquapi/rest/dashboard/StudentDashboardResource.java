@@ -24,14 +24,14 @@ public class StudentDashboardResource {
     @Path("/change-password")
     @PATCH
     public void changePassword(LoginMsg loginMsg) {
-        dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
+        dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         dashboardService.changePassword(loginMsg);
     }
 
     @Path("/save")
     @POST
     public Response save(RequestDataRecord requestDataRecord) {
-        dashboardService = InvocationProxy.newInstance(new DashboardServiceBean());
+        dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         return Response.ok(new ResponseMessage(dashboardService.insertData(requestDataRecord) ? "SUCCESS" : "FAILED")).build();
     }
 
