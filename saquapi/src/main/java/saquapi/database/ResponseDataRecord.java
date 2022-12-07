@@ -10,7 +10,7 @@ public class ResponseDataRecord extends DataRecord{
     }
 
     public ResponseDataRecord(int key, int roomNumber, long coldWater, long hotWater, Date date) {
-        super(roomNumber, coldWater, hotWater);
+        super(roomNumber, coldWater, hotWater, date);
         this.key = key;
     }
 }
