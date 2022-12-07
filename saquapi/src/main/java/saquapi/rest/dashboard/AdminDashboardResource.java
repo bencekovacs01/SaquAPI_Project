@@ -1,6 +1,7 @@
 package saquapi.rest.dashboard;
 
 import saquapi.database.DataRecord;
+import saquapi.database.ResponseDataRecord;
 import saquapi.services.base.InvocationProxy;
 import saquapi.services.dashboard.DashboardService;
 import saquapi.services.dashboard.DashboardServiceBean;
@@ -18,14 +19,14 @@ public class AdminDashboardResource {
 
     @Path("/get-all-data")
     @GET
-    public List<DataRecord> getAllRoomsWithData() {
+    public List<ResponseDataRecord> getAllRoomsWithData() {
         dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         return dashboardService.getAllRoomsWithData();
     }
 
     @Path("/get-room-data")
     @GET
-    public List<DataRecord> getRoomData(@QueryParam("roomNumber") int roomNumber){
+    public List<ResponseDataRecord> getRoomData(@QueryParam("roomNumber") int roomNumber){
         dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         return dashboardService.getRoomData(roomNumber);
     }

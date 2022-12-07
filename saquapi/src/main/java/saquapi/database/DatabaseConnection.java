@@ -11,7 +11,7 @@ public class DatabaseConnection {
     private static Connection con;
     private  static PreparedStatement ps;
     private static ResultSet rs;
-    private static final List<DataRecord> myData = new ArrayList<>();
+    private static final List<ResponseDataRecord> myData = new ArrayList<>();
 
     public static void deleteUser(int roomNumber){
         try{
@@ -107,14 +107,14 @@ public class DatabaseConnection {
         }
     } // INSERT insert new data
 
-    public static List<DataRecord> listRoomData(int roomNumber){
+    public static List<ResponseDataRecord> listRoomData(int roomNumber){
         try{
             myData.clear();
             ps = con.prepareStatement("select HotWater, ColdWater, IDX from Data where RoomNumber=?");
             ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
             while (rs.next()){
-                myData.add(new DataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new ResponseDataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
             return myData;
         } catch (SQLException e) {
@@ -122,13 +122,13 @@ public class DatabaseConnection {
         }
     } // SELECT list all data of given roomNumber
 
-    public static List<DataRecord> listAll(){
+    public static List<ResponseDataRecord> listAll(){
         try{
             myData.clear();
             ps = con.prepareStatement("select IDX,RoomNumber,ColdWater,HotWater from Data");
             rs = ps.executeQuery();
             while(rs.next()){
-                myData.add(new DataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
             }
             return myData;
         } catch (SQLException e) {

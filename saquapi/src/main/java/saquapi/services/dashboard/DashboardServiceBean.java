@@ -3,6 +3,7 @@ package saquapi.services.dashboard;
 import saquapi.database.DataRecord;
 import saquapi.database.DatabaseConnection;
 import saquapi.database.RequestDataRecord;
+import saquapi.database.ResponseDataRecord;
 import saquapi.rest.login.LoginMsg;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class DashboardServiceBean implements DashboardService{
         DatabaseConnection.changeUserPassword(loginMsg.getRoomNumber(),loginMsg.getPassword());
     }
 
-    public List<DataRecord> getAllRooms(){
+    public List<ResponseDataRecord> getAllRooms(){
         return null;
     }
 
@@ -31,7 +32,7 @@ public class DashboardServiceBean implements DashboardService{
         return true;
     }
 
-    public List<DataRecord> getAllRoomsWithData() {
+    public List<ResponseDataRecord> getAllRoomsWithData() {
         try{
             return DatabaseConnection.listAll();
         }catch (RuntimeException e){
@@ -39,7 +40,7 @@ public class DashboardServiceBean implements DashboardService{
         }
     }
 
-    public List<DataRecord> getRoomData(int roomNumber){
+    public List<ResponseDataRecord> getRoomData(int roomNumber){
         try{
             return DatabaseConnection.listRoomData(roomNumber);
         }catch (RuntimeException e){

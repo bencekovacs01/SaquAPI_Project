@@ -9,8 +9,8 @@ public class RequestDataRecord extends DataRecord {
     public RequestDataRecord() {
     }
 
-    public RequestDataRecord(int key, int roomNumber, long coldWater, long hotWater, FileInputStream fileInputStream) {
-        super(key, roomNumber, coldWater, hotWater);
+    public RequestDataRecord(int roomNumber, long coldWater, long hotWater, FileInputStream fileInputStream) {
+        super(roomNumber, coldWater, hotWater);
         this.fileInputStream = fileInputStream;
     }
 
