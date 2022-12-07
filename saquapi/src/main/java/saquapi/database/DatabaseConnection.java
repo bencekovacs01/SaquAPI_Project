@@ -34,12 +34,12 @@ public class DatabaseConnection {
         }
     }
 
-    public static void changeUserPassword(int roomNumber, String newPass){
+    public static boolean changeUserPassword(int roomNumber, String newPass){
         try{
             ps = con.prepareStatement("update Users set Password=? where RoomNumber=?");
             ps.setString(1,newPass);
             ps.setInt(2,roomNumber);
-            ps.executeUpdate();
+            return ps.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -107,14 +107,32 @@ public class DatabaseConnection {
         }
     } // INSERT insert new data
 
+    public static List<ResponseDataRecord> listLatestDataEachRoom(){
+        try{
+            myData.clear();
+            ps = con.prepareStatement("SELECT a.* FROM Data a INNER JOIN" +
+                    " (SELECT RoomNumber, MAX(Date) as MaxDate FROM Data GROUP BY RoomNumber) b" +
+                    " ON a.RoomNumber = b.RoomNumber AND a.Date = b.MaxDate");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                ResponseDataRecord rdr = new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date"));
+                System.out.println(rdr);
+                myData.add(rdr);
+            }
+            return myData;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    } // SELECT list latest data each room
+
     public static List<ResponseDataRecord> listRoomData(int roomNumber){
         try{
             myData.clear();
-            ps = con.prepareStatement("select HotWater, ColdWater, IDX from Data where RoomNumber=?");
+            ps = con.prepareStatement("select IDX,HotWater,ColdWater,Date from Data where RoomNumber=?");
             ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
             while (rs.next()){
-                myData.add(new ResponseDataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new ResponseDataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date")));
             }
             return myData;
         } catch (SQLException e) {
@@ -125,10 +143,10 @@ public class DatabaseConnection {
     public static List<ResponseDataRecord> listAll(){
         try{
             myData.clear();
-            ps = con.prepareStatement("select IDX,RoomNumber,ColdWater,HotWater from Data");
+            ps = con.prepareStatement("select IDX,RoomNumber,ColdWater,HotWater,Date from Data");
             rs = ps.executeQuery();
             while(rs.next()){
-                myData.add(new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater")));
+                myData.add(new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date")));
             }
             return myData;
         } catch (SQLException e) {
