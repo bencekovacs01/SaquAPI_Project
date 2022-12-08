@@ -59,7 +59,8 @@ public class DatabaseConnection {
 
     public static byte[] getImage(int key){
         try{
-            ps = con.prepareStatement("select Image from Data");
+            ps = con.prepareStatement("select Image from Data where IDX=?");
+            ps.setInt(1,key);
             rs = ps.executeQuery();
             if(rs.next()){
                 Blob b = rs.getBlob("Image");
