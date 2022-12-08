@@ -81,13 +81,13 @@ public class DatabaseConnection {
         }
     } // DELETE delete record
 
-    public static void updateData(int key, long coldWater, long hotWater){
+    public static boolean updateData(int key, long coldWater, long hotWater){
         try{
             ps = con.prepareStatement("update Data set ColdWater=?, HotWater=? where IDX=?");
             ps.setLong(1,coldWater);
             ps.setLong(2,hotWater);
             ps.setInt(3,key);
-            ps.executeUpdate();
+            return ps.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
