@@ -4,6 +4,7 @@ import saquapi.database.DataRecord;
 import saquapi.database.DatabaseConnection;
 import saquapi.database.RequestDataRecord;
 import saquapi.database.ResponseDataRecord;
+import saquapi.rest.dashboard.UpdateRequestMsg;
 import saquapi.rest.login.LoginMsg;
 
 import java.time.LocalDateTime;
@@ -11,48 +12,56 @@ import java.sql.Date;
 import java.util.List;
 
 
-public class DashboardServiceBean implements DashboardService{
+public class DashboardServiceBean implements DashboardService {
 
-    public void changePassword(LoginMsg loginMsg){
-        DatabaseConnection.changeUserPassword(loginMsg.getRoomNumber(),loginMsg.getPassword());
+    public Boolean changePassword(LoginMsg loginMsg) {
+        return DatabaseConnection.changeUserPassword(loginMsg.getRoomNumber(), loginMsg.getPassword());
     }
 
-    public List<ResponseDataRecord> getAllRooms(){
+    public List<ResponseDataRecord> getAllRooms() {
         return null;
     }
 
-    public Boolean insertData(RequestDataRecord requestDataRecord){
+    public Boolean insertData(RequestDataRecord requestDataRecord) {
         LocalDateTime now = LocalDateTime.now();
-        Date date = new Date(now.getYear()-1900,now.getMonthValue()-1,now.getDayOfMonth());
-        try{
+        Date date = new Date(now.getYear() - 1900, now.getMonthValue() - 1, now.getDayOfMonth());
+        try {
             DatabaseConnection.insertData(requestDataRecord.getRoomNumber(), requestDataRecord.getColdWater(), requestDataRecord.getHotWater(), date, requestDataRecord.getFileInputStream());
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return false;
         }
         return true;
     }
 
     public List<ResponseDataRecord> getAllRoomsWithData() {
-        try{
+        try {
             return DatabaseConnection.listAll();
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return null;
         }
     }
 
-    public List<ResponseDataRecord> getRoomData(int roomNumber){
-        try{
+    public List<ResponseDataRecord> getRoomData(int roomNumber) {
+        try {
             return DatabaseConnection.listRoomData(roomNumber);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return null;
         }
     }
 
-    public byte[] getImage(int key){
-        try{
+    public byte[] getImage(int key) {
+        try {
             return DatabaseConnection.getImage(key);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return null;
+        }
+    }
+
+    public Boolean updateData(UpdateRequestMsg updateRequestMsg) {
+        try {
+            return DatabaseConnection.updateData(updateRequestMsg.getKey(),updateRequestMsg.getColdWater(), updateRequestMsg.getHotWater());
+        } catch (RuntimeException e) {
+            return false;
         }
     }
 }

@@ -13,4 +13,12 @@ public class ResponseDataRecord extends DataRecord{
         super(roomNumber, coldWater, hotWater, date);
         this.key = key;
     }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
 }

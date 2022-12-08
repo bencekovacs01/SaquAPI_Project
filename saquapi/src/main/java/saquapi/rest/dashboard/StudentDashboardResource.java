@@ -23,9 +23,9 @@ public class StudentDashboardResource {
 
     @Path("/change-password")
     @PATCH
-    public void changePassword(LoginMsg loginMsg) {
+    public Response changePassword(LoginMsg loginMsg) {
         dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
-        dashboardService.changePassword(loginMsg);
+        return Response.ok(new ResponseMessage(dashboardService.changePassword(loginMsg) ? "SUCCESS" : "FAILED")).build();
     }
 
     @Path("/save")
