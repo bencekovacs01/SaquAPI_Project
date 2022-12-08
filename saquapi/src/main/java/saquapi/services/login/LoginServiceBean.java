@@ -1,34 +1,23 @@
 package saquapi.services.login;
 
+import saquapi.rest.base.ResponseMessage;
 import saquapi.rest.login.LoginMsg;
-import saquapi.services.logger.LoggerService;
 import saquapi.database.DatabaseConnection;
 
-import javax.inject.Inject;
-
-public class LoginServiceBean implements LoginService{
-
-    @Inject
-    LoggerService loggerService;
+public class LoginServiceBean implements LoginService {
 
     @Override
-    public LoginMsg login(LoginMsg loginMsg){
-//        loggerService.info("Logging in...");
-        if (!authentication(loginMsg)){
-//            loggerService.error("Wrong login credentials!");
-            return null;
+    public Boolean login(LoginMsg loginMsg) {
+        try {
+            return DatabaseConnection.loginCredentials(loginMsg.getRoomNumber(), loginMsg.getPassword());
+        } catch (RuntimeException e) {
+            return false;
         }
-//        loggerService.info(loginMsg.toString());
-        return loginMsg;
     }
 
     @Override
-    public LoginMsg logout() throws Exception {
+    public LoginMsg logout() {
         return null;
-    }
-
-    private Boolean authentication(LoginMsg loginMsg){
-        return DatabaseConnection.loginCredentials(loginMsg.getRoomNumber(), loginMsg.getPassword());
     }
 
 }
