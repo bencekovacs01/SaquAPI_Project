@@ -6,7 +6,6 @@ public class DataRecord {
     int roomNumber;
     long coldWater;
     long hotWater;
-    Date date;
 
     public DataRecord() {
     }
@@ -15,16 +14,6 @@ public class DataRecord {
         this.roomNumber = roomNumber;
         this.coldWater = coldWater;
         this.hotWater = hotWater;
-    }
-
-    public DataRecord(int roomNumber, long coldWater, long hotWater, Date date) {
-        this.roomNumber = roomNumber;
-        this.coldWater = coldWater;
-        this.hotWater = hotWater;
-        this.date = date;
-    }
-    public Date getDate() {
-        return date;
     }
 
     public int getRoomNumber() {

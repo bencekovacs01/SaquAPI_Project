@@ -8,11 +8,9 @@ import saquapi.services.dashboard.DashboardService;
 import saquapi.services.dashboard.DashboardServiceBean;
 
 import javax.inject.Inject;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.io.FileInputStream;
 
 @Path("/dashboard/user")
 @Produces("application/json")
@@ -30,7 +28,8 @@ public class StudentDashboardResource {
 
     @Path("/save")
     @POST
-    public Response save(RequestDataRecord requestDataRecord) {
+    public Response save(@FormParam("roomNumber") int roomNumber, @FormParam("coldWater") long coldWater, @FormParam("hotWater") long hotWater, @FormParam("fileInputStream") FileInputStream fileInputStream) {
+        RequestDataRecord requestDataRecord = new RequestDataRecord(roomNumber,coldWater,hotWater,fileInputStream);
         dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         return Response.ok(new ResponseMessage(dashboardService.insertData(requestDataRecord) ? "SUCCESS" : "FAILED")).build();
     }

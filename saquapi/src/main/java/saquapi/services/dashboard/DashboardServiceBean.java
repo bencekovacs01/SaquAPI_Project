@@ -1,6 +1,5 @@
 package saquapi.services.dashboard;
 
-import saquapi.database.DataRecord;
 import saquapi.database.DatabaseConnection;
 import saquapi.database.RequestDataRecord;
 import saquapi.database.ResponseDataRecord;

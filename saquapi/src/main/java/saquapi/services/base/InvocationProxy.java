@@ -1,7 +1,6 @@
 package saquapi.services.base;
 
 import saquapi.database.DatabaseConnection;
-import saquapi.services.dashboard.DashboardService;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
