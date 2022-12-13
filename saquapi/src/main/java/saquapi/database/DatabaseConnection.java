@@ -116,7 +116,7 @@ public class DatabaseConnection {
                     " ON a.RoomNumber = b.RoomNumber AND a.Date = b.MaxDate");
             rs = ps.executeQuery();
             while(rs.next()){
-                ResponseDataRecord rdr = new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date"));
+                ResponseDataRecord rdr = new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date").toLocalDate());
                 System.out.println(rdr);
                 myData.add(rdr);
             }
@@ -133,7 +133,7 @@ public class DatabaseConnection {
             ps.setInt(1,roomNumber);
             rs = ps.executeQuery();
             while (rs.next()){
-                myData.add(new ResponseDataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date")));
+                myData.add(new ResponseDataRecord(rs.getInt("IDX"),roomNumber,rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date").toLocalDate()));
             }
             return myData;
         } catch (SQLException e) {
@@ -147,7 +147,7 @@ public class DatabaseConnection {
             ps = con.prepareStatement("select IDX,RoomNumber,ColdWater,HotWater,Date from Data");
             rs = ps.executeQuery();
             while(rs.next()){
-                myData.add(new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date")));
+                myData.add(new ResponseDataRecord(rs.getInt("IDX"),rs.getInt("RoomNumber"),rs.getLong("ColdWater"),rs.getLong("HotWater"),rs.getDate("Date").toLocalDate()));
             }
             return myData;
         } catch (SQLException e) {

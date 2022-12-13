@@ -16,10 +16,16 @@ public class HelloResource {
     @GET
     @Produces("text/plain")
     public String hello() {
-//        Logger logger = Logger.getLogger(HelloResource.class.getName());a
-//        logger.info("HI");
-//        LoggerService loggerService = new LoggerService();
-        loggerService.info("HI");
+//        loggerService.info("HELLO!");
+//        DatabaseConnection.estabilishConnection();
+//        List<DataRecord> list = DatabaseConnection.listAll();
+//
+//        for (DataRecord dr : list){
+//            System.out.println(dr);
+//        }
+//
+//        DatabaseConnection.closeConnection();
+
         return "Hello, SaquAPI! :)";
     }
 }
