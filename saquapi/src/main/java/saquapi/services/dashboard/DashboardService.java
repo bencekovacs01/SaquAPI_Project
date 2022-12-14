@@ -19,7 +19,7 @@ public interface DashboardService {
 
     List<ResponseDataRecord> getRoomData(int roomNumber);
 
-    String getImage(int key);
+    byte[] getImage(int key);
 
     Boolean updateData(UpdateRequestMsg updateRequestMsg);
 }

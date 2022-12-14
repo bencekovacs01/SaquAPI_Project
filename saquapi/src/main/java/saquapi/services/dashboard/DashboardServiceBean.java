@@ -48,7 +48,7 @@ public class DashboardServiceBean implements DashboardService {
         }
     }
 
-    public String getImage(int key) {
+    public byte[] getImage(int key) {
         try {
             return DatabaseConnection.getImage(key);
         } catch (RuntimeException e) {

@@ -63,20 +63,19 @@ public class DatabaseConnection {
         }
     }
 
-    public static String getImage(int key){
+    public static byte[] getImage(int key){
         try{
             ps = con.prepareStatement("select Image from Data where IDX=?");
             ps.setInt(1,key);
             rs = ps.executeQuery();
             if(rs.next()){
                 Blob b = rs.getBlob("Image");
-                byte[] encodedByte = b.getBytes(1, (int) b.length());
-                return Base64.getEncoder().encodeToString(encodedByte);
+                return b.getBytes(1, (int) b.length());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return ""; // just in case something went wrong
+        return null; // just in case something went wrong
     } // SELECT get image on index(key)
 
     public  static void deleteData(int key){
