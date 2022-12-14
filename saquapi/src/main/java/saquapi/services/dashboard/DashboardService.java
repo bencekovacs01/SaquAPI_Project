@@ -1,6 +1,5 @@
 package saquapi.services.dashboard;
 
-import saquapi.database.DataRecord;
 import saquapi.database.RequestDataRecord;
 import saquapi.database.ResponseDataRecord;
 import saquapi.rest.dashboard.UpdateRequestMsg;
@@ -20,7 +19,7 @@ public interface DashboardService {
 
     List<ResponseDataRecord> getRoomData(int roomNumber);
 
-    byte[] getImage(int key);
+    String getImage(int key);
 
     Boolean updateData(UpdateRequestMsg updateRequestMsg);
 }

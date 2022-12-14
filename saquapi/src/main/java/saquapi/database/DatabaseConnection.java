@@ -1,10 +1,16 @@
 package saquapi.database;
 
 // Importing database
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+
+import javax.sql.rowset.serial.SerialBlob;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 // Importing required classes
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 public class DatabaseConnection {
@@ -57,19 +63,20 @@ public class DatabaseConnection {
         }
     }
 
-    public static byte[] getImage(int key){
+    public static String getImage(int key){
         try{
             ps = con.prepareStatement("select Image from Data where IDX=?");
             ps.setInt(1,key);
             rs = ps.executeQuery();
             if(rs.next()){
                 Blob b = rs.getBlob("Image");
-                return b.getBytes(1,(int)b.length());
+                byte[] encodedByte = b.getBytes(1, (int) b.length());
+                return Base64.getEncoder().encodeToString(encodedByte);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return new byte[0]; // just in case something went wrong
+        return ""; // just in case something went wrong
     } // SELECT get image on index(key)
 
     public  static void deleteData(int key){
@@ -94,16 +101,18 @@ public class DatabaseConnection {
         }
     } // UPDATE update data
 
-    public static void insertData(int roomNumber, long coldWater, long hotWater, Date date, FileInputStream fin){
+    public static void insertData(int roomNumber, long coldWater, long hotWater, Date date, String fin){
         try{
+            byte[] decodedByte = Base64.getDecoder().decode(fin);
+            Blob b = new SerialBlob(decodedByte);
             ps = con.prepareStatement("insert into Data(roomnumber, coldwater, hotwater, date, image) values(?,?,?,?,?)");
             ps.setInt(1,roomNumber);
             ps.setLong(2,coldWater);
             ps.setLong(3,hotWater);
             ps.setDate(4,date);
-            ps.setBinaryStream(5,fin,fin.available());
+            ps.setBlob(5,b);
             ps.executeUpdate();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     } // INSERT insert new data

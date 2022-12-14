@@ -34,7 +34,7 @@ public class AdminDashboardResource {
 
     @Path("/get-image")
     @GET
-    public byte[] getImage(@QueryParam("key") int key){
+    public String getImage(@QueryParam("key") int key){
         dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         return dashboardService.getImage(key);
     }
