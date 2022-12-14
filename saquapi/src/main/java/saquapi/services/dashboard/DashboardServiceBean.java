@@ -25,7 +25,7 @@ public class DashboardServiceBean implements DashboardService {
         LocalDateTime now = LocalDateTime.now();
         Date date = new Date(now.getYear() - 1900, now.getMonthValue() - 1, now.getDayOfMonth());
         try {
-            DatabaseConnection.insertData(requestDataRecord.getRoomNumber(), requestDataRecord.getColdWater(), requestDataRecord.getHotWater(), date, requestDataRecord.getFileInputStream());
+            DatabaseConnection.insertData(requestDataRecord.getRoomNumber(), requestDataRecord.getColdWater(), requestDataRecord.getHotWater(), date, requestDataRecord.getBase64StringImage());
         } catch (RuntimeException e) {
             return false;
         }

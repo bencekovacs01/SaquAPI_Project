@@ -4,21 +4,21 @@ import java.io.FileInputStream;
 
 public class RequestDataRecord extends DataRecord {
 
-    public FileInputStream fileInputStream;
+    public String base64StringImage;
 
     public RequestDataRecord() {
     }
 
-    public RequestDataRecord(int roomNumber, long coldWater, long hotWater, FileInputStream fileInputStream) {
+    public RequestDataRecord(int roomNumber, long coldWater, long hotWater, String base64StringImage) {
         super(roomNumber, coldWater, hotWater);
-        this.fileInputStream = fileInputStream;
+        this.base64StringImage = base64StringImage;
     }
 
-    public FileInputStream getFileInputStream() {
-        return fileInputStream;
+    public String getBase64StringImage() {
+        return base64StringImage;
     }
 
-    public void setFileInputStream(FileInputStream fileInputStream) {
-        this.fileInputStream = fileInputStream;
+    public void setBase64StringImage(String base64StringImage) {
+        this.base64StringImage = base64StringImage;
     }
 }
