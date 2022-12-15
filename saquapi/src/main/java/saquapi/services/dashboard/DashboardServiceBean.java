@@ -22,6 +22,11 @@ public class DashboardServiceBean implements DashboardService {
     }
 
     public Boolean insertData(RequestDataRecord requestDataRecord) {
+        try{
+            requestDataRecord.setBase64StringImage(requestDataRecord.getBase64StringImage().substring(23));
+        }catch (NullPointerException e){
+            return false;
+        }
         LocalDateTime now = LocalDateTime.now();
         Date date = new Date(now.getYear() - 1900, now.getMonthValue() - 1, now.getDayOfMonth());
         try {

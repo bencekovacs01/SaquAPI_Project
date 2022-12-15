@@ -33,7 +33,6 @@ public class StudentDashboardResource {
     @Path("/save")
     @POST
     public Response save(RequestDataRecord requestDataRecord) {
-        requestDataRecord.setBase64StringImage(requestDataRecord.getBase64StringImage().substring(23));
         dashboardService = (DashboardService) InvocationProxy.newInstance(new DashboardServiceBean());
         return Response.ok(new ResponseMessage(dashboardService.insertData(requestDataRecord) ? "SUCCESS" : "FAILED")).build();
     }
